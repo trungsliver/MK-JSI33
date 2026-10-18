@@ -208,3 +208,61 @@ const students = [
     },
   },
 ];
+
+// 1. Lọc danh sách 3 học sinh đạt điểm TBHK cao nhất
+    // Dùng map để tính điểm TBHK của từng học sinh
+const top3_students = students.map(student => {
+    let totalScore = 0;
+    let subject = Object.keys(student.scores);
+
+    // Tính tổng điểm của từng học sinh
+    subject.forEach(sub => {
+        totalScore += student.scores[sub].score;
+    });
+
+    return {
+        name: student.name,
+        averageScore: totalScore / subject.length
+    };
+})
+    // Sắp xếp học sinh theo diểm trung bình giảm dần và lấy 3 học sinh đầu tiên
+top3_students.sort((a, b) => b.averageScore - a.averageScore);
+const top3 = top3_students.slice(0, 3);
+console.log('Danh sách 3 học sinh đạt điểm TBHK cao nhất:', top3);
+
+// 2. Tìm học sinh đạt điểm TBHK thấp nhất
+    // Học sinh điểm thấp nhất là học sinh cuối cùng trong danh sách đã sắp xếp
+const lowestStudent = top3_students[top3_students.length - 1];
+console.log('Học sinh đạt điểm TBHK thấp nhất:', lowestStudent);
+
+// 3. Tính điểm trung bình HK của toàn bộ 10 bạn học sinh trong lớp.
+let total_avg = 0
+    // Tính tổng điểm trung bình của tất cả học sinh
+top3_students.forEach(student => {
+    total_avg += student.averageScore;
+})
+avg = total_avg / top3_students.length;
+console.log('Điểm trung bình HK của toàn bộ 10 bạn học sinh trong lớp:', avg);
+
+// 4. In ra tên các học sinh đạt danh hiệu học lực: Giỏi - Khá - Trung Bình
+const hoc_luc = top3_students.map(student => {
+    if (student.averageScore >= 8) {
+        evaluation = "Giỏi";
+    } else if (student.averageScore >= 6.5) {
+        evaluation = "Khá";
+    } else {
+        evaluation = "Trung Bình";
+    }
+    // Trả về đối tượng chứa tên học sinh, điểm TB và danh hiệu học lực
+    return {
+        name: student.name,
+        averageScore: student.averageScore,
+        evaluation: evaluation
+    };
+})
+console.log('Danh sách học sinh đạt danh hiệu học lực:', hoc_luc);
+
+// 5. Lọc danh sách học sinh có số điểm TBHK >= 7 (chỉ cần hiển thị tên).
+    // Dùng filter()
+const students_above_7 = top3_students.filter(student => student.averageScore >= 7);
+console.log('Danh sách học sinh có số điểm TBHK >= 7:', students_above_7);
