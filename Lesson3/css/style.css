@@ -1,0 +1,132 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 40px 16px;
+    font-family: Arial, sans-serif;
+    color: #1f2937;
+    background: #f3f4f6;
+}
+
+.container {
+    width: min(100%, 680px);
+    margin: 0 auto;
+}
+
+h1 {
+    margin: 0;
+    text-align: center;
+    color: #2563eb;
+}
+
+.subtitle {
+    margin: 8px 0 24px;
+    text-align: center;
+    color: #6b7280;
+}
+
+.card {
+    margin-bottom: 20px;
+    padding: 24px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 6%);
+}
+
+label,
+h2 {
+    font-weight: 600;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+.row {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+input {
+    flex: 1;
+    min-width: 0;
+    padding: 11px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+input:focus {
+    outline: 2px solid #93c5fd;
+    border-color: #2563eb;
+}
+
+button {
+    padding: 10px 16px;
+    border: 0;
+    border-radius: 8px;
+    color: #ffffff;
+    background: #2563eb;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+#notes-list {
+    display: grid;
+    gap: 10px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.note-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    border-left: 4px solid #60a5fa;
+    border-radius: 8px;
+    background: #eff6ff;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.note-item:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 10px rgb(37 99 235 / 15%);
+}
+
+.note-item button {
+    flex-shrink: 0;
+    padding: 7px 10px;
+    background: #dc2626;
+}
+
+.note-item button:hover {
+    background: #b91c1c;
+}
+
+#empty-state {
+    color: #6b7280;
+    text-align: center;
+}
+
+@media (max-width: 480px) {
+    .row {
+        flex-direction: column;
+    }
+
+    .row button {
+        width: 100%;
+    }
+}
