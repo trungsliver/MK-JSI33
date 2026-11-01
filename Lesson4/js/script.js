@@ -230,3 +230,174 @@ async function registerUser() {
             error.message;
     }
 }
+
+// =================== LOGIN =====================
+document.getElementById("login-btn").addEventListener("click", loginUser);
+document.getElementById("google-login-btn").addEventListener("click", loginWithGoogle);
+
+
+handleGoogleRedirectResult();
+
+
+async function handleGoogleRedirectResult() {
+    try {
+        const result = await getRedirectResult(auth);
+
+        if (!result) return;
+
+        await finishGoogleLogin(result.user);
+    }
+    catch (error) {
+        console.error("Google redirect login error:", error);
+    }
+}
+
+async function loginWithGoogle() {
+    const message = document.getElementById("login-message");
+    message.innerText = "";
+
+    try {
+        const userCredential = await signInWithPopup(auth, googleProvider);
+        await finishGoogleLogin(userCredential.user);
+    }
+    catch (error) {
+        console.error("Google popup login error:", error);
+
+        if (error.code === "auth/popup-blocked" || error.code === "auth/popup-closed-by-user") {
+            message.innerText = "Popup was blocked, switching to redirect login...";
+            await signInWithRedirect(auth, googleProvider);
+            return;
+        }
+
+        if (error.code === "auth/unauthorized-domain") {
+            message.innerText = "This domain is not authorized in Firebase Auth";
+            return;
+        }
+
+        message.innerText = `Google login failed: ${error.code || "unknown error"}`;
+    }
+}
+
+async function finishGoogleLogin(user) {
+    const userRef = doc(db, "users", user.uid);
+    const userDoc = await getDoc(userRef);
+
+    const currentUser = {
+        uid: user.uid,
+        username: userDoc.exists() ? userDoc.data().username : (user.displayName || "Google User"),
+        email: user.email,
+        phone: userDoc.exists() ? userDoc.data().phone : "",
+        dob: userDoc.exists() ? userDoc.data().dob : "",
+        photoURL: user.photoURL || "",
+        last_login: new Date().toLocaleString()
+    };
+
+    await setDoc(userRef, {
+        username: currentUser.username,
+        email: currentUser.email,
+        phone: currentUser.phone,
+        dob: currentUser.dob,
+        photoURL: currentUser.photoURL,
+        created_at: userDoc.exists() ? userDoc.data().created_at : new Date().toISOString()
+    }, { merge: true });
+
+    localStorage.setItem("current_user", JSON.stringify(currentUser));
+
+    loadProfile();
+    showSection(profileSection);
+}
+
+
+async function loginUser() {
+    // Lấy dữ liệu người dùng nhập ở form đăng nhập
+    const email = document.getElementById("login-email").value.trim();
+    const password = document.getElementById("login-password").value;
+    const message = document.getElementById("login-message");
+
+    // Xóa thông báo cũ trước khi đăng nhập
+    message.innerText = "";
+
+    try {
+        // Xác thực tài khoản bằng Firebase Auth
+        const userCredential = await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
+
+        // Lấy UID của tài khoản vừa đăng nhập
+        const uid = userCredential.user.uid;
+
+        // Lấy dữ liệu hồ sơ người dùng từ Firestore
+        const userDoc = await getDoc(doc(db, "users", uid));
+        const userData = userDoc.data();
+
+        // Tạo object người dùng hiện tại để lưu tạm vào localStorage
+        const currentUser = {
+            uid,
+            ...userData,
+            last_login:
+                new Date().toLocaleString()
+        };
+
+        // Lưu phiên đăng nhập vào localStorage
+        localStorage.setItem(
+            "current_user",
+            JSON.stringify(currentUser)
+        );
+
+        // Nạp dữ liệu lên trang profile và chuyển sang section profile
+        loadProfile();
+        showSection(profileSection);
+
+    }
+    catch (error) {
+        // Hiển thị lỗi khi email hoặc mật khẩu sai
+        message.innerText =
+            "Email or password incorrect";
+    }
+}
+
+
+// =================== PROFILE =====================
+function loadProfile() {
+    // Lấy thông tin người dùng từ localStorage
+    const currentUser = JSON.parse(localStorage.getItem("current_user"));
+
+    if (!currentUser) return;
+
+    // Hiển thị thông tin người dùng trên trang profile
+    document.getElementById("profile-username").innerText = currentUser.username || "-";
+    document.getElementById("profile-email").innerText = currentUser.email || "-";
+    document.getElementById("profile-phone").innerText = currentUser.phone || "-";
+    document.getElementById("profile-dob").innerText = currentUser.dob || "-";
+    document.getElementById("profile-last-login").innerText = currentUser.last_login || "-";
+}
+
+// =================== LOGOUT =====================
+document.getElementById("logout-btn").addEventListener("click", logoutUser);
+
+async function logoutUser() {
+    // Đăng xuất với Firebase Auth
+    await signOut(auth);
+    // Xóa thông tin người dùng khỏi localStorage
+    localStorage.removeItem("current_user");
+    // Chuyển về trang login
+    showSection(loginSection);
+}
+
+// START APP
+function init() {
+    // Kiểm tra thông tin đăng nhập trong localStorage để quyết định hiển thị trang nào
+    const currentUser = localStorage.getItem("current_user");
+
+    if (currentUser) {
+        loadProfile();
+        showSection(profileSection);
+    }
+    else {
+        showSection(loginSection);
+    }
+}
+
+init();
