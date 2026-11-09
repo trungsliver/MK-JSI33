@@ -1,0 +1,10 @@
+Quy tắc đặt tên folder cho CP1: [TenLop]_[HoTen]_CP1
+Ví dụ: JSI33_BuiDucTrung_CP1
+
+Duy An: 80
+Khôi Nguyên: 70
+Hoàng Minh: 70
+Khiêm: 88
+Minh Trí: 85
+Bảo Hoàng: 85
+Anh Minh: 90
