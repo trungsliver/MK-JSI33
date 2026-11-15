@@ -59,7 +59,7 @@ function showSection(section) {
 	// Bỏ ẩn section được truyền vào
     section.classList.remove("hidden");
 }
-showSection(loginSection);
+showSection(registerSection);
 
 // Validation - kiểm tra thông tin
 	// Dung regular expression (regex)
