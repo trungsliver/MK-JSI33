@@ -233,3 +233,52 @@ function getAuthErrorMessage(error) {
             return 'Đã có lỗi xảy ra. Vui lòng thử lại sau.';
     }
 }
+
+// Hàm upload ảnh lên Cloudinary
+async function uploadImageToCloudinary(file) {
+    // Cấu trúc bắt buộc để gửi dữ liệu lên Cloudinary
+    const formData = new FormData();
+    // file dữ liệu (ảnh)
+    formData.append('file', file);
+    // preset (nơi lưu)
+    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+    // URL (tài khoản upload)
+    const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
+
+    // Gửi request upload ảnh
+    const response = await fetch(url, { method: 'POST', body: formData });
+    if (!response.ok) throw new Error('Lỗi khi upload ảnh lên Cloudinary');
+    const data = await response.json();
+    return data.secure_url; // Trả về URL của ảnh đã upload
+}
+
+// Hàm hiển thị bài đăng realtime
+function listenToPosts() {
+    const feedContainer = document.getElementById('feed-container');
+    if (!feedContainer) return;
+
+    // Tạo query để lấy các bài đăng theo thời gian giảm dần (mới nhất trước)
+    const postsQuery = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+
+    // Lắng nghe thay đổi từ Firestore
+    onSnapshot(postsQuery, (snapshot) => {
+        feedContainer.innerHTML = ''; // Xóa các bài đăng cũ
+        
+        // Hiển thị từng bài đăng
+        snapshot.forEach((doc) => {
+            const post = doc.data();
+            const postElement = document.createElement('div');
+            postElement.className = 'post';
+            postElement.innerHTML = `
+                <img src="${post.imageUrl}" alt="Post image">
+                <p class="caption">${post.caption}</p>
+                <p class="author">Đăng bởi: ${post.authorEmail}</p>
+                <p class="timestamp">${post.createdAt ? new Date(post.createdAt.toDate()).toLocaleString() : 'Vừa xong'}</p>
+            `;
+            feedContainer.appendChild(postElement);
+        });
+    }, (error) => {
+        console.error("Error listening to posts:", error);
+        feedContainer.innerHTML = '<p>Lỗi khi tải bài đăng. Vui lòng thử lại sau.</p>';
+    });
+}
