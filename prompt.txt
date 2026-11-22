@@ -16,3 +16,21 @@ Nội dung:
 	+ Logo (ảnh hình tròn) và tên website "My Empire" hiển thị phía bên trái
 	+ Menu điều hướng quản lý: Sản phẩm, Đơn hàng, Người dùng, Phản hồi, Tài khoản
 - Footer: tự tạo nội dung phù hợp
+
+-------------------------------------------
+Xây dựng main content cho index.html (của admin) cho website bán đồ chơi My Empire
+
+Yêu cầu:
+- Chỉ dùng HTML, CSS, Bootstrap, JS
+- Có responsive (PC - Tablet - mobile) 
+- Gửi tách riêng file HTML, CSS, JS
+- Sử dụng tone màu phù hợp với phong cách hiện đại
+- Viết đầy đủ hiệu ứng cho các thành phần trên giao diện
+- Đảm bảo website hiển thị được font chữ tiếng Việt, không lỗi font
+- Không được xóa header và footer đã làm
+- Ghi chú chi tiết bằng tiếng việt các dòng chức năng trong file js
+
+Nội dung: 
+- Giao diện đăng nhập tài khoản admin gồm: username, password
+- Yêu cầu bắt buộc phải đăng nhập thì mới vào được các trang quản lý
+- Tài khoản admin: username = "admin", password = "Admin@123"
