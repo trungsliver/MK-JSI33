@@ -1,0 +1,18 @@
+======================== ADMIN ==========================
+Xây dựng header & footer (của admin) cho website bán đồ chơi My Empire
+
+Yêu cầu:
+- Chỉ dùng HTML, CSS, Bootstrap, JS
+- Có responsive (PC - Tablet - mobile) 
+- Gửi tách riêng file HTML, CSS, JS
+- Sử dụng tone màu phù hợp với phong cách hiện đại
+- Viết đầy đủ hiệu ứng cho các thành phần trên giao diện
+- Đảm bảo website hiển thị được font chữ tiếng Việt, không lỗi font
+
+Nội dung: 
+- File html chỉ ghi thẻ header & footer
+- Toàn bộ nội dung của header, footer được tạo ra từ file js (chung 1 file)
+- Header
+	+ Logo (ảnh hình tròn) và tên website "My Empire" hiển thị phía bên trái
+	+ Menu điều hướng quản lý: Sản phẩm, Đơn hàng, Người dùng, Phản hồi, Tài khoản
+- Footer: tự tạo nội dung phù hợp
