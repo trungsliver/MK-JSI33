@@ -34,3 +34,41 @@ Nội dung:
 - Giao diện đăng nhập tài khoản admin gồm: username, password
 - Yêu cầu bắt buộc phải đăng nhập thì mới vào được các trang quản lý
 - Tài khoản admin: username = "admin", password = "Admin@123"
+
+----------------------------------------------
+Xây dựng main content cho products.html (của admin) cho website bán đồ chơi My Empire
+
+Yêu cầu:
+- Chỉ dùng HTML, CSS, Bootstrap, JS
+- Có responsive (PC - Tablet - mobile) 
+- Gửi tách riêng file HTML, CSS, JS
+- Sử dụng tone màu phù hợp với phong cách hiện đại
+- Viết đầy đủ hiệu ứng cho các thành phần trên giao diện
+- Đảm bảo website hiển thị được font chữ tiếng Việt, không lỗi font
+- Không được xóa header và footer đã làm
+- Ghi chú chi tiết bằng tiếng việt các dòng chức năng trong file js
+
+Nội dung: 
+- Hiển thị banner chứa thông tin: Tổng số sản phẩm, sản phẩm sắp hết hàng (số lượng <=10)
+- Có thanh tìm kiếm sản phẩm theo name, lọc theo giá,...
+- Có chức năng: Thêm - Sửa - Xóa sản phẩm - Xem chi tiết (nút chi tiết, sửa, xóa hiển thị ở card sản phẩm) và lưu vào Firebase Firestore
+- Hiển thị toàn bộ sản phẩm từ Firebase Firestore theo hàng dọc (mỗi sản phẩm là 1 hàng ngang)
+- Khi ấn nút Thêm/Sửa sản phẩm, sẽ hiển thị hộp thoại (popup) thông tin sản phẩm để điền/Sửa các thông tin cần thiết. Khi ấn Xem chi tiết, hiển thị toàn bộ thông tin. Khi xóa thì hiển thị hộp thoại cảnh báo. Lưu lại thông tin sản phẩm vào firestore sau khi thay đổi
+- Cấu trúc 1 sản   
+{"id": 1,
+    "name": "Bộ đồ chơi LEGO City Xe Cứu Hỏa",
+    "description": "Bộ đồ chơi LEGO giúp trẻ phát triển tư duy sáng tạo và khả năng lắp ráp.",
+    "brand": "LEGO",
+    "category": "Đồ chơi lắp ráp",
+    "ageRange": "6-12 tuổi",
+    "material": "Nhựa ABS",
+    "color": "Đỏ, Trắng, Đen",
+    "price": 1200000,
+    "discount": 15,
+    "stock": 150,
+    "sold": 45,
+    "image": "https://cdn.gumic.vn/storage/gumicvn/59356/k3fhk3jc.jpg",
+    "rating": 4.8,
+    "createdAt": "2026-11-01",
+    "updatedAt": "2026-11-20"
+}

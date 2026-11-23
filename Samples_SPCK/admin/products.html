@@ -27,6 +27,197 @@
     <header id="admin-header"></header>
 
     <!-- ============== MAIN CONTENT ============== -->
+    <main class="product-admin-page">
+        <div class="product-container">
+            <section class="page-heading">
+                <div>
+                    <span class="page-kicker">QUẢN TRỊ CỬA HÀNG</span>
+                    <h1>Danh mục sản phẩm</h1>
+                    <p>Theo dõi kho hàng, giá bán và thông tin đồ chơi.</p>
+                </div>
+                <button type="button" class="btn btn-add-product" id="open-add-product">
+                    <i class="bi bi-plus-lg"></i>
+                    <span>Thêm sản phẩm</span>
+                </button>
+            </section>
+
+            <section class="stats-grid" aria-label="Thống kê sản phẩm">
+                <article class="stat-card stat-primary">
+                    <div class="stat-icon"><i class="bi bi-box-seam"></i></div>
+                    <div>
+                        <span>Tổng số sản phẩm</span>
+                        <strong id="total-product-count">0</strong>
+                    </div>
+                </article>
+                <article class="stat-card stat-warning">
+                    <div class="stat-icon"><i class="bi bi-exclamation-triangle"></i></div>
+                    <div>
+                        <span>Sản phẩm sắp hết hàng</span>
+                        <strong id="low-stock-count">0</strong>
+                    </div>
+                </article>
+            </section>
+
+            <section class="product-toolbar">
+                <div class="toolbar-search">
+                    <i class="bi bi-search"></i>
+                    <input type="search" id="product-search" placeholder="Tìm theo tên sản phẩm..." aria-label="Tìm sản phẩm">
+                </div>
+                <div class="toolbar-filter">
+                    <select id="category-filter" aria-label="Lọc theo danh mục">
+                        <option value="">Tất cả danh mục</option>
+                    </select>
+                    <select id="price-filter" aria-label="Lọc theo giá">
+                        <option value="">Tất cả mức giá</option>
+                        <option value="0-500000">Dưới 500 nghìn</option>
+                        <option value="500000-1000000">500 nghìn - 1 triệu</option>
+                        <option value="1000000-999999999">Trên 1 triệu</option>
+                    </select>
+                    <select id="sort-filter" aria-label="Sắp xếp">
+                        <option value="newest">Mới cập nhật</option>
+                        <option value="priceAsc">Giá thấp đến cao</option>
+                        <option value="priceDesc">Giá cao đến thấp</option>
+                        <option value="stockAsc">Tồn kho thấp nhất</option>
+                    </select>
+                </div>
+            </section>
+
+            <section class="product-list-section">
+                <div class="list-header">
+                    <div>
+                        <h2>Danh sách sản phẩm</h2>
+                        <span id="result-count">Đang tải dữ liệu...</span>
+                    </div>
+                    <button type="button" class="btn-icon-action" id="refresh-products" aria-label="Tải lại danh sách">
+                        <i class="bi bi-arrow-clockwise"></i>
+                    </button>
+                </div>
+                <div id="product-list" class="product-list" aria-live="polite">
+                    <div class="loading-state">
+                        <div class="spinner-border" role="status"></div>
+                        <span>Đang tải sản phẩm...</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Popup thêm/sửa/xem chi tiết -->
+    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content product-modal">
+                <div class="modal-header">
+                    <div>
+                        <span class="modal-kicker" id="product-modal-kicker">SẢN PHẨM</span>
+                        <h2 class="modal-title" id="productModalTitle">Thêm sản phẩm</h2>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="product-form" novalidate>
+                        <input type="hidden" id="product-doc-id">
+                        <div class="form-grid">
+                            <div class="field-group span-2">
+                                <label for="product-name">Tên sản phẩm <b>*</b></label>
+                                <input type="text" id="product-name" required>
+                            </div>
+                            <div class="field-group span-2">
+                                <label for="product-description">Mô tả</label>
+                                <textarea id="product-description" rows="3"></textarea>
+                            </div>
+                            <div class="field-group">
+                                <label for="product-id">Mã sản phẩm <b>*</b></label>
+                                <input type="number" id="product-id" min="1" required>
+                            </div>
+                            <div class="field-group">
+                                <label for="product-brand">Thương hiệu</label>
+                                <input type="text" id="product-brand">
+                            </div>
+                            <div class="field-group">
+                                <label for="product-category">Danh mục</label>
+                                <input type="text" id="product-category">
+                            </div>
+                            <div class="field-group">
+                                <label for="product-age">Độ tuổi</label>
+                                <input type="text" id="product-age">
+                            </div>
+                            <div class="field-group">
+                                <label for="product-material">Chất liệu</label>
+                                <input type="text" id="product-material">
+                            </div>
+                            <div class="field-group">
+                                <label for="product-color">Màu sắc</label>
+                                <input type="text" id="product-color">
+                            </div>
+                            <div class="field-group">
+                                <label for="product-price">Giá bán (VNĐ) <b>*</b></label>
+                                <input type="number" id="product-price" min="0" required>
+                            </div>
+                            <div class="field-group">
+                                <label for="product-discount">Giảm giá (%)</label>
+                                <input type="number" id="product-discount" min="0" max="100">
+                            </div>
+                            <div class="field-group">
+                                <label for="product-stock">Tồn kho <b>*</b></label>
+                                <input type="number" id="product-stock" min="0" required>
+                            </div>
+                            <div class="field-group">
+                                <label for="product-sold">Đã bán</label>
+                                <input type="number" id="product-sold" min="0">
+                            </div>
+                            <div class="field-group">
+                                <label for="product-rating">Đánh giá</label>
+                                <input type="number" id="product-rating" min="0" max="5" step="0.1">
+                            </div>
+                            <div class="field-group span-2">
+                                <label for="product-image">URL hình ảnh</label>
+                                <input type="url" id="product-image" placeholder="https://...">
+                            </div>
+                            <div class="field-group">
+                                <label for="product-created">Ngày tạo</label>
+                                <input type="date" id="product-created">
+                            </div>
+                            <div class="field-group">
+                                <label for="product-updated">Ngày cập nhật</label>
+                                <input type="date" id="product-updated">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-modal-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-modal-primary" id="save-product" form="product-form">
+                        <i class="bi bi-check2-circle"></i>
+                        <span>Lưu sản phẩm</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup xác nhận xóa -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content delete-modal">
+                <div class="delete-icon"><i class="bi bi-trash3"></i></div>
+                <h2 id="deleteModalTitle">Xóa sản phẩm?</h2>
+                <p id="delete-modal-text">Hành động này không thể hoàn tác.</p>
+                <input type="hidden" id="delete-doc-id">
+                <div class="delete-actions">
+                    <button type="button" class="btn btn-modal-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-delete-confirm" id="confirm-delete">
+                        <i class="bi bi-trash3"></i> Xóa
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="app-toast" class="toast admin-toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body"><i id="toast-icon" class="bi bi-check-circle-fill"></i><span id="toast-message"></span></div>
+        </div>
+    </div>
 
     <!-- ============== FOOTER ============== -->
     <footer id="admin-footer"></footer>
